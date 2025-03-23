@@ -1,0 +1,126 @@
+[
+  {
+    "id": "1",
+    "name": "Get Users",
+    "endpoint": "/api/users",
+    "request": [
+      { "field": "page", "type": "number", "description": "Page number for pagination" },
+      { "field": "limit", "type": "number", "description": "Number of users per page" },
+      { "field": "filter", "type": "string", "description": "Optional filter for user search" }
+    ],
+    "response": [
+      { "field": "users", "type": "array", "description": "List of users" },
+      { "field": "totalCount", "type": "number", "description": "Total number of users" }
+    ],
+    "transformers": [
+      { "incomingField": "page", "actualField": "pageNum" },
+      { "incomingField": "limit", "actualField": "pageSize" },
+      { "incomingField": "filter", "actualField": "searchQuery" }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Create User",
+    "endpoint": "/api/users/create",
+    "request": [
+      { "field": "name", "type": "string", "description": "Full name of the user" },
+      { "field": "email", "type": "string", "description": "Email address" },
+      { "field": "password", "type": "string", "description": "Password for account" },
+      { "field": "address.street", "type": "string", "description": "Street address" },
+      { "field": "address.city", "type": "string", "description": "City" },
+      { "field": "address.zip", "type": "string", "description": "ZIP code" }
+    ],
+    "response": [
+      { "field": "userId", "type": "string", "description": "Unique identifier for the created user" },
+      { "field": "createdAt", "type": "string", "description": "Timestamp of creation" }
+    ],
+    "transformers": [
+      { "incomingField": "name", "actualField": "fullName" },
+      { "incomingField": "email", "actualField": "emailAddress" },
+      { "incomingField": "password", "actualField": "pwd" },
+      { "incomingField": "address.street", "actualField": "addr_street" },
+      { "incomingField": "address.city", "actualField": "addr_city" },
+      { "incomingField": "address.zip", "actualField": "addr_zip" }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Update User Profile",
+    "endpoint": "/api/users/update",
+    "request": [
+      { "field": "userId", "type": "string", "description": "User ID to update" },
+      { "field": "profile.bio", "type": "string", "description": "User biography" },
+      { "field": "profile.avatarUrl", "type": "string", "description": "URL to user avatar" },
+      { "field": "profile.social.twitter", "type": "string", "description": "Twitter handle" },
+      { "field": "profile.social.linkedin", "type": "string", "description": "LinkedIn profile URL" }
+    ],
+    "response": [
+      { "field": "status", "type": "string", "description": "Update status" },
+      { "field": "updatedAt", "type": "string", "description": "Timestamp of update" }
+    ],
+    "transformers": [
+      { "incomingField": "userId", "actualField": "id" },
+      { "incomingField": "profile.bio", "actualField": "biography" },
+      { "incomingField": "profile.avatarUrl", "actualField": "avatar" },
+      { "incomingField": "profile.social.twitter", "actualField": "twitterHandle" },
+      { "incomingField": "profile.social.linkedin", "actualField": "linkedinProfile" }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "Search Products",
+    "endpoint": "/api/products/search",
+    "request": [
+      { "field": "query", "type": "string", "description": "Search query string" },
+      { "field": "category", "type": "string", "description": "Product category filter" },
+      { "field": "priceRange.min", "type": "number", "description": "Minimum price" },
+      { "field": "priceRange.max", "type": "number", "description": "Maximum price" },
+      { "field": "sortBy", "type": "string", "description": "Sort field" },
+      { "field": "sortOrder", "type": "string", "description": "Sort order (asc/desc)" }
+    ],
+    "response": [
+      { "field": "products", "type": "array", "description": "List of products matching the search" },
+      { "field": "totalResults", "type": "number", "description": "Total number of matching products" }
+    ],
+    "transformers": [
+      { "incomingField": "query", "actualField": "searchTerm" },
+      { "incomingField": "category", "actualField": "productCategory" },
+      { "incomingField": "priceRange.min", "actualField": "minPrice" },
+      { "incomingField": "priceRange.max", "actualField": "maxPrice" },
+      { "incomingField": "sortBy", "actualField": "orderBy" },
+      { "incomingField": "sortOrder", "actualField": "direction" }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "Create Order",
+    "endpoint": "/api/orders/create",
+    "request": [
+      { "field": "userId", "type": "string", "description": "ID of the user placing the order" },
+      { "field": "items", "type": "array", "description": "List of order items" },
+      { "field": "items[].productId", "type": "string", "description": "Product identifier" },
+      { "field": "items[].quantity", "type": "number", "description": "Quantity of the product" },
+      { "field": "shipping.address", "type": "string", "description": "Shipping address" },
+      { "field": "shipping.method", "type": "string", "description": "Shipping method" },
+      { "field": "payment.method", "type": "string", "description": "Payment method" },
+      { "field": "payment.card.number", "type": "string", "description": "Credit card number" },
+      { "field": "payment.card.expiry", "type": "string", "description": "Card expiry date" },
+      { "field": "payment.card.cvv", "type": "string", "description": "Card CVV" }
+    ],
+    "response": [
+      { "field": "orderId", "type": "string", "description": "Unique order ID" },
+      { "field": "orderStatus", "type": "string", "description": "Status of the order" },
+      { "field": "estimatedDelivery", "type": "string", "description": "Estimated delivery date" }
+    ],
+    "transformers": [
+      { "incomingField": "userId", "actualField": "customerId" },
+      { "incomingField": "items", "actualField": "orderItems" },
+      { "incomingField": "shipping.address", "actualField": "deliveryAddress" },
+      { "incomingField": "shipping.method", "actualField": "deliveryMethod" },
+      { "incomingField": "payment.method", "actualField": "paymentType" },
+      { "incomingField": "payment.card.number", "actualField": "cardNum" },
+      { "incomingField": "payment.card.expiry", "actualField": "cardExpiry" },
+      { "incomingField": "payment.card.cvv", "actualField": "cardSecurity" }
+    ]
+  }
+]
